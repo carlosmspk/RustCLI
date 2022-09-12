@@ -7,6 +7,11 @@ use crossterm::{
     QueueableCommand,
 };
 
+/// Struct that holds relevant info regarding the process's current
+/// stdout and terminal. Can display many template CLI screens such as
+/// multiple choice menus and listings, progress screens, simples text
+/// inputs, etc. Also provides means to extract single key inputs from
+/// the user.
 pub struct Terminal {
     stdout: std::io::Stdout,
 }
