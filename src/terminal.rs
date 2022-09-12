@@ -3,9 +3,19 @@ use crossterm::{
     terminal::{Clear, ClearType},
 };
 
-use crate::cli_display::Error;
+pub struct Terminal {
+    stdout: std::io::Stdout,
+}
 
-pub fn clear() -> Result<(), Error>{
-    execute!(std::io::stdout(), Clear(ClearType::All))?;
+impl Terminal {
+    pub fn new() -> Terminal {
+        Terminal {
+            stdout: std::io::stdout(),
+        }
+    }
+    pub fn flush(&mut self) -> Result<(), Error> {
+        self.stdout.flush()?;
     Ok(())
+    }
+    }
 }
