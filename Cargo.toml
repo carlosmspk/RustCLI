@@ -3,7 +3,13 @@ name = "rust_cli"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "rust_cli"
+path = "src/lib.rs"
+
+[[bin]]
+name = "mybin"
+path = "playground/main.rs"
 
 [dependencies]
 colored = "2.0.0"
