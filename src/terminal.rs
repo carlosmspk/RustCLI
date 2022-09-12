@@ -21,5 +21,9 @@ impl Terminal {
         self.stdout.flush()?;
     Ok(())
     }
+    pub fn read_sync(&self) -> Result<crossterm::event::Event, Error> {
+        let event = crossterm::event::read()?;
+        Ok(event)
+    }
     }
 }
