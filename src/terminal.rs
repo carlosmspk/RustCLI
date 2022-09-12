@@ -1,6 +1,10 @@
+use crate::error::Error;
+use std::io::Write;
+
 use crossterm::{
-    execute,
+    self,
     terminal::{Clear, ClearType},
+    QueueableCommand,
 };
 
 pub struct Terminal {
@@ -25,5 +29,16 @@ impl Terminal {
         let event = crossterm::event::read()?;
         Ok(event)
     }
+    pub fn read_async(
+        &self,
+        timeout: Option<std::time::Duration>,
+    ) -> Result<Option<crossterm::event::Event>, Error> {
+        let timeout = timeout.unwrap_or(std::time::Duration::from_secs(0));
+
+        if crossterm::event::poll(timeout)? {
+            let event = crossterm::event::read()?;
+            return Ok(Some(event));
+        }
+        return Ok(None);
     }
 }
