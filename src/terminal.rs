@@ -13,6 +13,10 @@ impl Terminal {
             stdout: std::io::stdout(),
         }
     }
+    pub fn clear(&mut self) -> Result<(), Error> {
+        self.stdout.queue(Clear(ClearType::All))?;
+        self.flush()
+    }
     pub fn flush(&mut self) -> Result<(), Error> {
         self.stdout.flush()?;
     Ok(())
