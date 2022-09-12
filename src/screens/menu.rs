@@ -1,7 +1,4 @@
-use crate::{
-    cli_display::{CLIScreen, Error},
-    text::AnyString,
-};
+use crate::{cli_display::CLIScreen, error::Error, text::AnyString};
 
 pub struct Menu {
     options: Vec<AnyString>,
