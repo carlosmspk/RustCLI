@@ -1,8 +1,8 @@
+use rust_cli::debug::string_from_event;
 use rust_cli::error::Error;
 use rust_cli::terminal;
-use rust_cli::debug::string_from_event;
 
-fn main() -> Result<(), Error> {
+fn read_input_and_print_loop() -> Result<(), Error> {
     let mut term = terminal::Terminal::new();
     println!("Press any keys (q to exit)...");
     loop {
@@ -14,4 +14,8 @@ fn main() -> Result<(), Error> {
             return Ok(());
         }
     }
+}
+
+fn main() -> Result<(), Error> {
+    read_input_and_print_loop()
 }
