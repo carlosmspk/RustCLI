@@ -1,4 +1,4 @@
-use crate::{cli_display::CLIScreen, error::Error, text::AnyString};
+use crate::{cli_display::Displayable, error::Error, text::AnyString};
 
 pub struct Menu {
     options: Vec<AnyString>,
@@ -13,7 +13,7 @@ impl Menu {
     }
 }
 
-impl CLIScreen for Menu {
+impl Displayable for Menu {
     fn display(&self) -> Result<Vec<AnyString>, Error> {
         Ok(self.options.clone())
     }
