@@ -30,6 +30,33 @@ impl UserInput {
     }
 }
 
+impl From<String> for UserInput {
+    fn from(string: String) -> Self {
+        UserInput::Text(string)
+    }
+}
+
+impl From<&str> for UserInput {
+    fn from(string: &str) -> Self {
+        UserInput::Text(String::from(string))
+    }
+}
+
+impl From<i64> for UserInput {
+    fn from(number: i64) -> Self {
+        UserInput::Number(number)
+    }
+}
+
+impl From<crossterm::event::Event> for UserInput {
+    fn from(event: crossterm::event::Event) -> Self {
+        match event {
+            crossterm::event::Event::Key(key_event) => UserInput::KeyEvent(key_event),
+            crossterm::event::Event::Mouse(mouse_event) => UserInput::MouseEvent(mouse_event),
+            _ => UserInput::Other(event),
+        }
+    }
+}
 
 pub trait UserInteractable {
     fn on_event(&mut self, input: UserInput) -> Result<bool, Error>;
