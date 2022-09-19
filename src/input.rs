@@ -1,3 +1,5 @@
+use crate::error::Error;
+
 pub enum UserInput {
     Number(i64),
     Text(String),
@@ -23,4 +25,10 @@ impl UserInput {
         }
         return false
     }
+}
+
+
+pub trait UserInteractable {
+    fn on_event(&mut self, input: UserInput) -> Result<bool, Error>;
+    fn on_screen_exit(self) -> Option<UserInput>;
 }
