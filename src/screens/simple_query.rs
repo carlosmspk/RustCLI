@@ -13,3 +13,9 @@ impl SimpleQuery {
     }
 }
 
+impl Displayable for SimpleQuery {
+    fn display(&self) -> Result<Vec<AnyString>, Error> {
+        Ok(vec![self.message_prompt.clone()])
+    }
+}
+
