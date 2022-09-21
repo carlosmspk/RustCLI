@@ -32,7 +32,12 @@ impl Terminal {
         if let None = content_to_display {
             return Err(Error::TerminalScreenStackEmpty)
         }
-        let content_to_display = content_to_display.unwrap();
+        let content_to_display = content_to_display.unwrap().display()?;
+        self.clear()?;
+        for string in content_to_display {
+            println!("{}", string)
+        }
+        self.flush()?;
         return Ok(())
     }
 
