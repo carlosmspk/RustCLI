@@ -45,6 +45,15 @@ impl Terminal {
     }
 
 
+    fn refresh(&mut self, current_screen: &Box<dyn Screen>) -> Result<(), Error> {
+        let content_to_display = current_screen.display()?;
+        self.clear()?;
+        for string in content_to_display {
+            print!("{}", string)
+        }
+        self.flush()?;
+        return Ok(())
+    }
 
     fn get_current_screen(&self) -> Result<&Box<dyn Screen>, Error> {
         let content_to_display = self.screen_stack.get(self.screen_stack.len()-1);
