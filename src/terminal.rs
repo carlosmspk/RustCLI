@@ -26,6 +26,12 @@ impl Terminal {
         }
     }
 
+    /// Adds a new screen to the terminal. This will push the screen to the terminal's internal screen stack, immediately making that screen visible, without deleting the previous screens, which will remain on the stack and be shown when this screen gets popped.
+    /// ## Returns
+    /// `Ok(())` if screen was added and printed successfully. Returns `Err(Error)` if something went wrong, such as the screen not having
+    /// valid contents to display.
+    /// ## Arguments
+    /// `screen`: screen to be added. This sreen should be able to immediately provide content to print on screen via its `display()` method.
     pub fn add_screen(&mut self, screen: Box<dyn Displayable>) -> Result<(), Error>{
         self.screen_stack.push(screen);
         let content_to_display = self.get_current_screen()?;
