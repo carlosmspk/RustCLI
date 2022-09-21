@@ -16,7 +16,7 @@ fn read_input_and_print_loop() -> Result<(), Error> {
     }
 }
 
-fn simple_terminal() -> Result<(), Error> {
+fn simple_terminal_manual() -> Result<(), Error> {
     let mut term = rust_cli::terminal::Terminal::new();
     let screen = rust_cli::screens::SimpleQuery::new(String::from("Input: ").into());
     let screen = Box::new(screen);
@@ -26,6 +26,20 @@ fn simple_terminal() -> Result<(), Error> {
     return Ok(());
 }
 
+fn simple_terminal_api() -> Result<(), Error> {
+    let mut term = rust_cli::terminal::Terminal::new();
+    let screen = rust_cli::screens::SimpleQuery::new(String::from("Input: ").into());
+    let screen = Box::new(screen);
+    term.add_screen(screen)?;
+    let input = term.wait_for_input()?;
+    if let None = input {
+        return Ok(());
+    }
+    let input = input.unwrap();
+    println!("Input: {}", input);
+    return Ok(());
+}
+
 fn main() -> Result<(), Error> {
-    simple_terminal()
+    simple_terminal_api()
 }
