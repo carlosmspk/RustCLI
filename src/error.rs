@@ -2,6 +2,7 @@
 pub enum Error {
     ItemlessOptionListError,
     IOError(std::io::Error),
+    TerminalScreenStackEmpty,
 }
 
 impl std::fmt::Display for Error {
@@ -11,6 +12,10 @@ impl std::fmt::Display for Error {
             Self::ItemlessOptionListError => write!(
                 f,
                 "ItemlessMenuError: Menu Screen has no options to choose from!"
+            ),
+            Self::TerminalScreenStackEmpty => write!(
+                f,
+                "TerminalScreenStackEmpty: Terminal has no screens in its screen stack!"
             ),
         }
     }
