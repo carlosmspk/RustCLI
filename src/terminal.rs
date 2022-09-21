@@ -42,7 +42,7 @@ impl Terminal {
     pub fn clear(&mut self) -> Result<(), Error> {
         self.stdout.queue(Clear(ClearType::All))?;
         self.flush()?;
-        Ok(())
+        return Ok(())
     }
 
     /// Flushes stdout with all buffered data. Most of the time, there is no need to call this method, as the `Terminal` struct will call it when required.
@@ -50,7 +50,7 @@ impl Terminal {
     /// `Ok(())` if flush was successful. Returns `Err(Error)` if something went wrong, such as stdout being absent.
     pub fn flush(&mut self) -> Result<(), Error> {
         self.stdout.flush()?;
-        Ok(())
+        return Ok(())
     }
 
     /// Reads input from the keyboard, blocking indefinitely until input is available. Returns the read event wrapped in Result.
@@ -60,7 +60,7 @@ impl Terminal {
     /// `Ok(Event)` if the read was successful. Returns `Err(Error)` if something went wrong, such as stdout being absent.
     pub fn read_sync(&self) -> Result<crossterm::event::Event, Error> {
         let event = crossterm::event::read()?;
-        Ok(event)
+        return Ok(event)
     }
 
     /// Reads input from the keyboard, blocking for a given amount of time provided by `timeout`. If `timeout` is `None`, then the function immediately returns if no input is available. Regardless, a result with the optional value is returned (as there may be no input available within the timeout frame).
