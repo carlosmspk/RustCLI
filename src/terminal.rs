@@ -32,7 +32,7 @@ impl Terminal {
         let content_to_display = content_to_display.display()?;
         self.clear()?;
         for string in content_to_display {
-            println!("{}", string)
+            print!("{}", string)
         }
         self.flush()?;
         return Ok(())
