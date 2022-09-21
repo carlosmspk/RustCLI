@@ -58,11 +58,6 @@ impl From<crossterm::event::Event> for UserInput {
     }
 }
 
-pub trait UserInteractable {
-    fn on_event(&mut self, input: UserInput) -> Result<bool, Error>;
-    fn on_screen_exit(self) -> Option<UserInput>;
-}
-
 #[cfg(test)]
 mod tests {
     use super::UserInput;

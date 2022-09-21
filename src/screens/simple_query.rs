@@ -1,4 +1,6 @@
-use crate::{cli_display::Displayable, error::Error, input::{UserInteractable, UserInput}, text::AnyString};
+use crate::{error::Error, input::UserInput, text::AnyString};
+
+use super::Screen;
 pub struct SimpleQuery {
     message_prompt: AnyString,
     user_response_buffer: String,
@@ -13,13 +15,10 @@ impl SimpleQuery {
     }
 }
 
-impl Displayable for SimpleQuery {
+impl Screen for SimpleQuery {
     fn display(&self) -> Result<Vec<AnyString>, Error> {
         Ok(vec![self.message_prompt.clone()])
     }
-}
-
-impl UserInteractable for SimpleQuery {
     fn on_event(&mut self, input: UserInput) -> Result<bool, Error> {
         let char_input_option = input.as_char();
         if let Some(input_char) = char_input_option {
@@ -35,3 +34,4 @@ impl UserInteractable for SimpleQuery {
         Some(UserInput::from(self.user_response_buffer))
     }
 }
+

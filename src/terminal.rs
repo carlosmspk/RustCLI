@@ -1,4 +1,4 @@
-use crate::{cli_display::Displayable, error::Error};
+use crate::{screens::Screen, error::Error};
 use std::io::Write;
 
 use crossterm::{
@@ -14,7 +14,7 @@ use crossterm::{
 /// the user.
 pub struct Terminal {
     stdout: std::io::Stdout,
-    screen_stack: Vec<Box<dyn Displayable>>,
+    screen_stack: Vec<Box<dyn Screen>>,
 }
 
 impl Terminal {
@@ -32,7 +32,7 @@ impl Terminal {
     /// valid contents to display.
     /// ## Arguments
     /// `screen`: screen to be added. This sreen should be able to immediately provide content to print on screen via its `display()` method.
-    pub fn add_screen(&mut self, screen: Box<dyn Displayable>) -> Result<(), Error>{
+    pub fn add_screen(&mut self, screen: Box<dyn Screen>) -> Result<(), Error>{
         self.screen_stack.push(screen);
         let content_to_display = self.get_current_screen()?;
         let content_to_display = content_to_display.display()?;
@@ -46,7 +46,7 @@ impl Terminal {
 
 
 
-    fn get_current_screen(&self) -> Result<&Box<dyn Displayable>, Error> {
+    fn get_current_screen(&self) -> Result<&Box<dyn Screen>, Error> {
         let content_to_display = self.screen_stack.get(self.screen_stack.len()-1);
         if let None = content_to_display {
             return Err(Error::TerminalScreenStackEmpty)
