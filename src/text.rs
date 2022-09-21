@@ -52,3 +52,12 @@ impl From<AnyString> for ColoredString {
         }
     }
 }
+
+impl std::fmt::Display for AnyString {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            AnyString::CommonString(common_string) => write!(f, "{}", common_string),
+            AnyString::ColoredString(colored_string) => write!(f, "{}", colored_string),
+        }
+    }
+}

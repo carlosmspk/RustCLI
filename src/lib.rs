@@ -1,4 +1,3 @@
-pub(crate) mod cli_display;
 pub mod error;
 pub mod screens;
 /// make public to crate only later
