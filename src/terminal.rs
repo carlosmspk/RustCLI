@@ -28,7 +28,12 @@ impl Terminal {
 
     pub fn add_screen(&mut self, screen: Box<dyn Displayable>) -> Result<(), Error>{
         self.screen_stack.push(screen);
-        self
+        let content_to_display = self.screen_stack.get(self.screen_stack.len()-1);
+        if let None = content_to_display {
+            return Err(Error::TerminalScreenStackEmpty)
+        }
+        let content_to_display = content_to_display.unwrap();
+        return Ok(())
     }
 
     /// Clears the terminal.
