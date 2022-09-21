@@ -1,4 +1,4 @@
-use crate::{screens::Screen, error::Error};
+use crate::{screens::Screen, error::Error, input::UserInput};
 use std::io::Write;
 
 use crossterm::{
@@ -34,8 +34,8 @@ impl Terminal {
     /// `screen`: screen to be added. This sreen should be able to immediately provide content to print on screen via its `display()` method.
     pub fn add_screen(&mut self, screen: Box<dyn Screen>) -> Result<(), Error>{
         self.screen_stack.push(screen);
-        let content_to_display = self.get_current_screen()?;
-        let content_to_display = content_to_display.display()?;
+        let current_screen = self.get_current_screen()?;
+        let content_to_display = current_screen.display()?;
         self.clear()?;
         for string in content_to_display {
             print!("{}", string)
@@ -44,6 +44,19 @@ impl Terminal {
         return Ok(())
     }
 
+    pub fn wait_for_input(&mut self) -> Result<Option<UserInput>, Error>{
+        let mut current_screen = self.screen_stack.pop().unwrap();
+        loop {
+            let input = self.read_sync()?;
+            let screen_command = current_screen.on_event(input.into())?;
+            match screen_command {
+                crate::screens::ScreenCommand::Idle => (), //no-op
+                crate::screens::ScreenCommand::Refresh => self.refresh(&current_screen)?,
+                crate::screens::ScreenCommand::Exit => return Ok(current_screen.on_screen_exit()),
+                crate::screens::ScreenCommand::Abort(err) => return Err(err),
+            }
+        }
+    }
 
     fn refresh(&mut self, current_screen: &Box<dyn Screen>) -> Result<(), Error> {
         let content_to_display = current_screen.display()?;
