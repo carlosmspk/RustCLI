@@ -27,11 +27,13 @@ impl Terminal {
     }
     /// Clears the terminal.
     /// ## Returns
-    /// `Ok(())` if the read was successful. Returns `Err(Error)` if something went wrong, such as stdout being absent.
+    /// `Ok(())` if the clear was successful. Returns `Err(Error)` if something went wrong, such as stdout being absent.
     pub fn clear(&mut self) -> Result<(), Error> {
         self.stdout.queue(Clear(ClearType::All))?;
-        self.flush()
+        self.flush()?;
+        Ok(())
     }
+
     /// Flushes stdout with all buffered data. Most of the time, there is no need to call this method, as the `Terminal` struct will call it when required.
     /// ## Returns
     /// `Ok(())` if flush was successful. Returns `Err(Error)` if something went wrong, such as stdout being absent.
@@ -39,7 +41,10 @@ impl Terminal {
         self.stdout.flush()?;
         Ok(())
     }
+
     /// Reads input from the keyboard, blocking indefinitely until input is available. Returns the read event wrapped in Result.
+    /// Most times you'll want to use one of the input screens to gather user info, displaying some sort of prompt message, or
+    /// multiple choices from a list to pick from. This function will directly read a single event, without updating the current screen.
     /// ## Returns
     /// `Ok(Event)` if the read was successful. Returns `Err(Error)` if something went wrong, such as stdout being absent.
     pub fn read_sync(&self) -> Result<crossterm::event::Event, Error> {
@@ -48,6 +53,8 @@ impl Terminal {
     }
 
     /// Reads input from the keyboard, blocking for a given amount of time provided by `timeout`. If `timeout` is `None`, then the function immediately returns if no input is available. Regardless, a result with the optional value is returned (as there may be no input available within the timeout frame).
+    /// Most times you'll want to use one of the input screens to gather user info, displaying some sort of prompt message, or
+    /// multiple choices from a list to pick from. This function will directly read a single event, without updating the current screen.
     /// ## Returns
     /// `Ok()` wrapping `Some(Event)` if some input was available, otherwise returns `Ok(None)`. Returns `Err(Error)` if something went wrong, such as stdout being absent.
     /// ## Arguments
