@@ -25,6 +25,12 @@ impl Terminal {
             screen_stack: Vec::new(),
         }
     }
+
+    pub fn screen(mut self, screen: Box<dyn Displayable>) -> Self{
+        self.screen_stack.push(screen);
+        self
+    }
+
     /// Clears the terminal.
     /// ## Returns
     /// `Ok(())` if the clear was successful. Returns `Err(Error)` if something went wrong, such as stdout being absent.
