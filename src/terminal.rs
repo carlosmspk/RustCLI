@@ -26,7 +26,7 @@ impl Terminal {
         }
     }
 
-    pub fn screen(mut self, screen: Box<dyn Displayable>) -> Self{
+    pub fn add_screen(&mut self, screen: Box<dyn Displayable>) -> Result<(), Error>{
         self.screen_stack.push(screen);
         self
     }
