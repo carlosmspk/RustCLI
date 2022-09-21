@@ -1,6 +1,6 @@
 #[derive(Debug)]
 pub enum Error {
-    ItemlessMenuError,
+    ItemlessOptionListError,
     IOError(std::io::Error),
 }
 
@@ -8,7 +8,7 @@ impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::IOError(e) => write!(f, "{}", e),
-            Self::ItemlessMenuError => write!(
+            Self::ItemlessOptionListError => write!(
                 f,
                 "ItemlessMenuError: Menu Screen has no options to choose from!"
             ),

@@ -1,19 +1,19 @@
 use crate::{cli_display::Displayable, error::Error, text::AnyString};
 
-pub struct Menu {
+pub struct OptionList {
     options: Vec<AnyString>,
 }
 
-impl Menu {
+impl OptionList {
     pub fn new(options: Vec<AnyString>) -> Result<Self, Error> {
         if options.len() == 0 {
-            return Err(Error::ItemlessMenuError);
+            return Err(Error::ItemlessOptionListError);
         }
         Ok(Self { options })
     }
 }
 
-impl Displayable for Menu {
+impl Displayable for OptionList {
     fn display(&self) -> Result<Vec<AnyString>, Error> {
         Ok(self.options.clone())
     }
