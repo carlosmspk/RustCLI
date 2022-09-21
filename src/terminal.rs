@@ -1,4 +1,4 @@
-use crate::error::Error;
+use crate::{cli_display::Displayable, error::Error};
 use std::io::Write;
 
 use crossterm::{
@@ -14,6 +14,7 @@ use crossterm::{
 /// the user.
 pub struct Terminal {
     stdout: std::io::Stdout,
+    screen_stack: Vec<Box<dyn Displayable>>,
 }
 
 impl Terminal {
@@ -21,6 +22,7 @@ impl Terminal {
     pub fn new() -> Terminal {
         Terminal {
             stdout: std::io::stdout(),
+            screen_stack: Vec::new(),
         }
     }
     /// Clears the terminal.
