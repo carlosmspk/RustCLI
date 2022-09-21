@@ -1,6 +1,6 @@
 use crate::{error::Error, text::AnyString};
 
-use super::Screen;
+use super::{Screen, ScreenCommand};
 
 pub struct OptionList {
     options: Vec<AnyString>,
@@ -20,11 +20,11 @@ impl Screen for OptionList {
         Ok(self.options.clone())
     }
 
-    fn on_event(&mut self, input: crate::input::UserInput) -> Result<bool, Error> {
+    fn on_event(&mut self, input: crate::input::UserInput) -> Result<ScreenCommand, Error> {
         todo!()
     }
 
-    fn on_screen_exit(self) -> Option<crate::input::UserInput> {
+    fn on_screen_exit(&self) -> Option<crate::input::UserInput> {
         todo!()
     }
 }

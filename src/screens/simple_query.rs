@@ -1,6 +1,6 @@
 use crate::{error::Error, input::UserInput, text::AnyString};
 
-use super::Screen;
+use super::{Screen, ScreenCommand};
 pub struct SimpleQuery {
     message_prompt: AnyString,
     user_response_buffer: String,
@@ -17,21 +17,28 @@ impl SimpleQuery {
 
 impl Screen for SimpleQuery {
     fn display(&self) -> Result<Vec<AnyString>, Error> {
-        Ok(vec![self.message_prompt.clone()])
+        Ok(vec![self.message_prompt.clone(), self.user_response_buffer.clone().into()])
     }
-    fn on_event(&mut self, input: UserInput) -> Result<bool, Error> {
+    fn on_event(&mut self, input: UserInput) -> Result<ScreenCommand, Error> {
         let char_input_option = input.as_char();
         if let Some(input_char) = char_input_option {
             self.user_response_buffer.push(input_char);
-            return Ok(false)
-        } else if input.is_enter() {
-            return Ok(true)
+            return Ok(ScreenCommand::Refresh)
         }
-        Ok(false)
+        if let UserInput::KeyEvent(key) = input {
+            if let crossterm::event::KeyCode::Backspace = key.code {
+                self.user_response_buffer.pop();
+                return Ok(ScreenCommand::Refresh)
+            }
+        }
+        if input.is_enter() {
+            return Ok(ScreenCommand::Exit)
+        }
+        Ok(ScreenCommand::Idle)
     }
 
-    fn on_screen_exit(self) -> Option<UserInput> {
-        Some(UserInput::from(self.user_response_buffer))
+    fn on_screen_exit(&self) -> Option<UserInput> {
+        Some(self.user_response_buffer.clone().into())
     }
 }
 
