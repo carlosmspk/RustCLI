@@ -28,17 +28,25 @@ impl Terminal {
 
     pub fn add_screen(&mut self, screen: Box<dyn Displayable>) -> Result<(), Error>{
         self.screen_stack.push(screen);
-        let content_to_display = self.screen_stack.get(self.screen_stack.len()-1);
-        if let None = content_to_display {
-            return Err(Error::TerminalScreenStackEmpty)
-        }
-        let content_to_display = content_to_display.unwrap().display()?;
+        let content_to_display = self.get_current_screen()?;
+        let content_to_display = content_to_display.display()?;
         self.clear()?;
         for string in content_to_display {
             println!("{}", string)
         }
         self.flush()?;
         return Ok(())
+    }
+
+
+
+    fn get_current_screen(&self) -> Result<&Box<dyn Displayable>, Error> {
+        let content_to_display = self.screen_stack.get(self.screen_stack.len()-1);
+        if let None = content_to_display {
+            return Err(Error::TerminalScreenStackEmpty)
+        }
+        let content_to_display = content_to_display.unwrap();
+        Ok(content_to_display)
     }
 
     /// Clears the terminal.
