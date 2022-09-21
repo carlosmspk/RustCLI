@@ -1,5 +1,3 @@
-use crate::error::Error;
-
 pub enum UserInput {
     Number(i64),
     Text(String),
@@ -12,7 +10,10 @@ impl UserInput {
     pub fn as_char(&self) -> Option<char> {
         if let Self::KeyEvent(key_event) = self {
             if let crossterm::event::KeyCode::Char(char) = key_event.code {
-                if key_event.modifiers.contains(crossterm::event::KeyModifiers::SHIFT) {
+                if key_event
+                    .modifiers
+                    .contains(crossterm::event::KeyModifiers::SHIFT)
+                {
                     return Some(char.to_ascii_uppercase());
                 }
                 return Some(char);
@@ -54,6 +55,18 @@ impl From<crossterm::event::Event> for UserInput {
             crossterm::event::Event::Key(key_event) => UserInput::KeyEvent(key_event),
             crossterm::event::Event::Mouse(mouse_event) => UserInput::MouseEvent(mouse_event),
             _ => UserInput::Other(event),
+        }
+    }
+}
+
+impl std::fmt::Display for UserInput {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            UserInput::Number(num) => write!(f, "{}", num),
+            UserInput::Text(string) => write!(f, "{}", string),
+            UserInput::KeyEvent(event) => write!(f, "{:?}", event),
+            UserInput::MouseEvent(event) => write!(f, "{:?}", event),
+            UserInput::Other(event) => write!(f, "{:?}", event),
         }
     }
 }
@@ -127,15 +140,13 @@ mod tests {
         let capitalized_a_as_char = capitalized_a_as_char.unwrap();
         assert_eq!(capitalized_a_as_char, 'A');
 
-        let capitalized_a_shift =
-            UserInput::from(TestUtils::new_key_event_a_capitalized_shift());
+        let capitalized_a_shift = UserInput::from(TestUtils::new_key_event_a_capitalized_shift());
         let capitalized_a_shift_as_char = capitalized_a_shift.as_char();
         assert!(matches!(capitalized_a_shift_as_char, Some(_)));
         let capitalized_a_shift_as_char = capitalized_a_shift_as_char.unwrap();
         assert_eq!(capitalized_a_shift_as_char, 'A');
 
-        let a =
-            UserInput::from(TestUtils::new_key_event_a());
+        let a = UserInput::from(TestUtils::new_key_event_a());
         let a_as_char = a.as_char();
         assert!(matches!(a_as_char, Some(_)));
         let a_as_char = a_as_char.unwrap();
