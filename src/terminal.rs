@@ -4,7 +4,7 @@ use std::io::Write;
 use crossterm::{
     self,
     terminal::{Clear, ClearType},
-    QueueableCommand,
+    QueueableCommand, cursor::MoveTo,
 };
 
 /// Struct that holds relevant info regarding the process's current
@@ -81,7 +81,7 @@ impl Terminal {
     /// ## Returns
     /// `Ok(())` if the clear was successful. Returns `Err(Error)` if something went wrong, such as stdout being absent.
     pub fn clear(&mut self) -> Result<(), Error> {
-        self.stdout.queue(Clear(ClearType::All))?;
+        self.stdout.queue(Clear(ClearType::All))?.queue(MoveTo(0,0))?;
         self.flush()?;
         return Ok(())
     }

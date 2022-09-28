@@ -2,11 +2,11 @@ use crate::{error::Error, text::AnyString};
 
 use super::{Screen, ScreenCommand};
 
-pub struct OptionList {
+pub struct OptionsList {
     options: Vec<AnyString>,
 }
 
-impl OptionList {
+impl OptionsList {
     pub fn new(options: Vec<AnyString>) -> Result<Self, Error> {
         if options.len() == 0 {
             return Err(Error::ItemlessOptionListError);
@@ -15,7 +15,7 @@ impl OptionList {
     }
 }
 
-impl Screen for OptionList {
+impl Screen for OptionsList {
     fn display(&self) -> Result<Vec<AnyString>, Error> {
         Ok(self.options.clone())
     }
