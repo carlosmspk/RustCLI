@@ -40,6 +40,24 @@ fn simple_terminal_api() -> Result<(), Error> {
     return Ok(());
 }
 
+fn multiple_options_api() -> Result<(), Error> {
+    let mut term = rust_cli::terminal::Terminal::new();
+    let options = vec![
+        String::from("Alice"),
+        String::from("Bob"),
+    ];
+    let screen = rust_cli::screens::OptionsList::from_string(options)?;
+    let screen = Box::new(screen);
+    term.add_screen(screen)?;
+    let input = term.wait_for_input()?;
+    if let None = input {
+        return Ok(());
+    }
+    let input = input.unwrap();
+    println!("Input: {}", input);
+    return Ok(());
+}
+
 fn main() -> Result<(), Error> {
-    simple_terminal_api()
+    multiple_options_api()
 }
