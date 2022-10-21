@@ -22,8 +22,8 @@ impl UserInput {
         return None;
     }
     pub fn is_enter(&self) -> bool {
-        if let UserInput::KeyEvent(code) = self {
-            if let crossterm::event::KeyCode::Enter = code.code {
+        if let UserInput::KeyEvent(key) = self {
+            if let crossterm::event::KeyCode::Enter = key.code {
                 return true;
             }
         }
