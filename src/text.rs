@@ -25,6 +25,12 @@ impl From<String> for AnyString {
     }
 }
 
+impl From<&String> for AnyString {
+    fn from(input: &String) -> Self {
+        Self::CommonString(input.clone())
+    }
+}
+
 impl From<ColoredString> for AnyString {
     fn from(input: ColoredString) -> Self {
         if input.is_plain() {
