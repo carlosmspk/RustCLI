@@ -1,3 +1,12 @@
+use crossterm::event::KeyCode;
+
+pub enum Directional {
+    Up,
+    Down,
+    Left,
+    Right,
+}
+
 pub enum UserInput {
     Number(i64),
     Text(String),
@@ -28,6 +37,21 @@ impl UserInput {
             }
         }
         return false;
+    }
+    pub fn key_code(&self) -> Option<KeyCode> {
+        if let UserInput::KeyEvent(key) = self {
+            return Some(key.code);
+        }
+        return None;
+    }
+    pub fn directional(&self) -> Option<Directional> {
+        match self {
+            UserInput::Number(_) => None,
+            UserInput::Text(_) => todo!(),
+            UserInput::KeyEvent(_) => todo!(),
+            UserInput::MouseEvent(_) => None,
+            UserInput::Other(_) => None,
+        }
     }
 }
 
